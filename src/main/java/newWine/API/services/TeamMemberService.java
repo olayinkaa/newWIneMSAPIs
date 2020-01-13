@@ -4,9 +4,12 @@ package newWine.API.services;
 import newWine.API.exceptions.TeamMemberExistException;
 import newWine.API.exceptions.TeamMemberNotFoundException;
 import newWine.API.models.TeamMember;
+import newWine.API.repositories.CellRepository;
 import newWine.API.repositories.TeamMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,9 +21,13 @@ public class TeamMemberService {
     @Autowired
     private TeamMemberRepository teamMemberRepository;
 
+    @Autowired
+    private CellRepository cellRepository;
+
 // Query all team members
     public Iterable<TeamMember> findAllTeamMembers()
     {
+
         return teamMemberRepository.findAll();
     }
 
@@ -65,4 +72,17 @@ public class TeamMemberService {
 
     }
 
+    public void deleteTeamMember(Long id)
+    {
+        if(teamMemberRepository.findById(id).isPresent())
+        {
+            teamMemberRepository.deleteById(id);
+        }
+
+        Optional<TeamMember> optionalTeamMember = teamMemberRepository.findById(id);
+        if(!optionalTeamMember.isPresent())
+        {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Team Member Not found");
+        }
+    }
 }

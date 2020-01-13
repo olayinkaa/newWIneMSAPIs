@@ -1,6 +1,7 @@
 package newWine.API.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import lombok.*;
 
@@ -42,6 +43,7 @@ public class TeamMember {
         @Column(name="email", nullable = false, unique = true)
         private String email;
 
+        @Size(min=11, message="Phone number should be atleast 11 digits")
         @Column(name="phone_number")
         private String phoneNumber;
 
@@ -55,6 +57,14 @@ public class TeamMember {
 
         @Column(name="occupation")
         private String occupation;
+
+//        @JsonIgnore
+//        private Cell cell;
+//        @OneToOne(fetch = FetchType.EAGER)
+        @JoinColumn(name="cell_id")
+        private Long cellId;
+
+
 
 
 

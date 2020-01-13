@@ -7,27 +7,33 @@ import io.swagger.annotations.ApiParam;
 import newWine.API.exceptions.TeamMemberExistException;
 import newWine.API.exceptions.TeamMemberNotFoundException;
 import newWine.API.models.TeamMember;
+import newWine.API.services.CellService;
 import newWine.API.services.MapValidationErrorService;
 import newWine.API.services.TeamMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.Optional;
 
 
 @Api(tags="Team Member Management", value="TeamMemberController")
+@Validated
 @RestController
-@RequestMapping("/api/members")
+@RequestMapping("/api/v1/members")
 public class TeamMemberController {
 
 
     @Autowired
     TeamMemberService teamMemberService;
+
+
 
     @Autowired
     private MapValidationErrorService mapValidationErrorService;
@@ -38,7 +44,7 @@ public class TeamMemberController {
     public ResponseEntity<?> getAllTeamMembers()
     {
         Iterable<TeamMember> teamMembers = teamMemberService.findAllTeamMembers();
-        return new ResponseEntity<Iterable<TeamMember>>(teamMembers, HttpStatus.OK);
+        return new ResponseEntity<>(teamMembers, HttpStatus.OK);
     }
 
 //Create a team member request
@@ -52,8 +58,9 @@ public class TeamMemberController {
 
         try
         {
+
             TeamMember teamMember1 = teamMemberService.saveOrUpdate(teamMember);
-            return new ResponseEntity<TeamMember>(teamMember1,HttpStatus.OK);
+            return new ResponseEntity<>(teamMember1,HttpStatus.OK);
         }
         catch (TeamMemberExistException ex)
         {
@@ -66,7 +73,7 @@ public class TeamMemberController {
 //Query a  team member request
     @GetMapping("/{id}")
     @ApiOperation(value = "Query a team member")
-    public ResponseEntity<Optional<TeamMember>> getTeamMember(@PathVariable("id") Long id)
+    public ResponseEntity<Optional<TeamMember>> getTeamMember(@PathVariable("id") @Min(1) Long id)
     {
             try
             {
@@ -97,6 +104,16 @@ public class TeamMemberController {
         {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,ex.getMessage());
         }
+    }
+
+
+    @DeleteMapping("/{id}")
+    @ApiOperation(value="Delete a Team Member Info")
+    public ResponseEntity<?> deleteTeamMember(@PathVariable("id") Long id)
+    {
+        teamMemberService.deleteTeamMember(id);
+
+        return new ResponseEntity<String>("Team Member was successfully deleted",HttpStatus.OK);
     }
 
 

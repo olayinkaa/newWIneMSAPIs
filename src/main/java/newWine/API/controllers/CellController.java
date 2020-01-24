@@ -5,7 +5,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import newWine.API.dtos.CellDtos;
-import newWine.API.models.Cell;
+import newWine.API.persistence.entity.Cell;
 import newWine.API.models.Request.CellRequest;
 import newWine.API.models.response.CellResponse;
 import newWine.API.services.CellService;

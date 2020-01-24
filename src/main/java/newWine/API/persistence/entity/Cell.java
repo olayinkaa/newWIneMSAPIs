@@ -1,4 +1,4 @@
-package newWine.API.models;
+package newWine.API.persistence.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;

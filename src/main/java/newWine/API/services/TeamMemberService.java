@@ -1,88 +1,37 @@
 package newWine.API.services;
 
 
+import newWine.API.core.ModelMapperUtils;
 import newWine.API.exceptions.TeamMemberExistException;
 import newWine.API.exceptions.TeamMemberNotFoundException;
-import newWine.API.models.TeamMember;
-import newWine.API.repositories.CellRepository;
-import newWine.API.repositories.TeamMemberRepository;
+import newWine.API.models.Request.TeamMemberRequest;
+import newWine.API.models.response.TeamMemberResponse;
+import newWine.API.persistence.entity.Cell;
+import newWine.API.persistence.entity.TeamMember;
+import newWine.API.persistence.repository.CellRepository;
+import newWine.API.persistence.repository.TeamMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
 import java.util.Optional;
 
 
-@Service
-public class TeamMemberService {
+public interface TeamMemberService {
 
-    @Autowired
-    private TeamMemberRepository teamMemberRepository;
+    // Query all team members
+    public Iterable<TeamMember> findAllTeamMembers();
+    // Create a team member
+    public TeamMemberResponse saveOrUpdate(TeamMemberRequest request) throws TeamMemberExistException;
 
-    @Autowired
-    private CellRepository cellRepository;
-
-// Query all team members
-    public Iterable<TeamMember> findAllTeamMembers()
-    {
-
-        return teamMemberRepository.findAll();
-    }
-
-// Create a team member
-    public TeamMember saveOrUpdate(TeamMember teamMember) throws TeamMemberExistException
-    {
-        TeamMember existingMember  =   teamMemberRepository.findByEmail(teamMember.getEmail());
-        if(existingMember != null)
-        {
-            throw new TeamMemberExistException("Team Member Already Exist");
-        }
-        return teamMemberRepository.save(teamMember);
-    }
-
-//    Query a single team member by id
-    public Optional<TeamMember> findTeamMember(Long id) throws TeamMemberNotFoundException {
-
-        Optional<TeamMember> member = teamMemberRepository.findById(id);
-
-        if(!member.isPresent())
-        {
-            throw new TeamMemberNotFoundException("No available Member with the id="+id);
-        }
-
-        return member;
-
-    }
+    //    Query a single team member by id
+    public Optional<TeamMember> findTeamMember(Long id) throws TeamMemberNotFoundException ;
 
 
 // Update a team member Info
 
-    public TeamMember updateTeamMember(Long id, TeamMember teamMember) throws TeamMemberNotFoundException
-    {
-               Optional<TeamMember> member = teamMemberRepository.findById(id);
-               if(!member.isPresent())
-               {
-                   throw new TeamMemberNotFoundException("Team Member Not Found");
-               }
+    public TeamMember updateTeamMember(Long id, TeamMember teamMember) throws TeamMemberNotFoundException;
 
-               teamMember.setId(id);
-               return teamMemberRepository.save(teamMember);
-
-    }
-
-    public void deleteTeamMember(Long id)
-    {
-        if(teamMemberRepository.findById(id).isPresent())
-        {
-            teamMemberRepository.deleteById(id);
-        }
-
-        Optional<TeamMember> optionalTeamMember = teamMemberRepository.findById(id);
-        if(!optionalTeamMember.isPresent())
-        {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Team Member Not found");
-        }
-    }
+    public void deleteTeamMember(Long id);
 }

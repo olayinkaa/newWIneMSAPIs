@@ -1,5 +1,5 @@
-package newWine.API.repositories;
-import newWine.API.models.Cell;
+package newWine.API.persistence.repository;
+import newWine.API.persistence.entity.Cell;
 import org.springframework.data.repository.CrudRepository;
 
 //

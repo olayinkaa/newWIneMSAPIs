@@ -1,6 +1,6 @@
-package newWine.API.repositories;
+package newWine.API.persistence.repository;
 
-import newWine.API.models.Cell;
+import newWine.API.persistence.entity.Cell;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

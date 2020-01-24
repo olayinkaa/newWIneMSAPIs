@@ -1,7 +1,7 @@
-package newWine.API.repositories;
+package newWine.API.persistence.repository;
 
 
-import newWine.API.models.TeamMember;
+import newWine.API.persistence.entity.TeamMember;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

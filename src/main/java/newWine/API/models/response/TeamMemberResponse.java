@@ -1,8 +1,9 @@
 package newWine.API.models.response;
 
 
+import lombok.Data;
 
-
+@Data
 public class TeamMemberResponse {
 
     private Long id;
@@ -23,7 +24,6 @@ public class TeamMemberResponse {
 
     private String occupation;
 
-
-    private Long cell_id;
+    private CellResponse cell;
 
 }

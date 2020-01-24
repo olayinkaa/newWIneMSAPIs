@@ -3,50 +3,21 @@ package newWine.API.services;
 
 
 import newWine.API.dtos.CellDtos;
-import newWine.API.models.Cell;
-import newWine.API.repositories.CellRepository;
+import newWine.API.persistence.entity.Cell;
+import newWine.API.persistence.repository.CellRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Service
-public class CellService {
+public interface CellService {
 
-    @Autowired
-    private CellRepository cellRepository;
 
-    @Autowired
-    private ModelMapper modelMapper;
+    public Iterable<Cell> findAllCells();
 
-//    Query all cell fellowship
-    public Iterable<Cell> findAllCells()
-    {
-        return cellRepository.findAll();
-    }
+    public Optional<Cell> findACell(Long id);
 
-//    Query Single cell fellowship
-
-    public Optional<Cell> findACell(Long id)
-    {
-        Optional<Cell> cell = cellRepository.findById(id);
-
-        return cell;
-
-    }
-
-//    Create a cell fellowship
-
-    public CellDtos postCell(CellDtos cell)
-    {
-        Cell cello = modelMapper.map(cell,Cell.class);
-        cellRepository.save(cello);
-
-        CellDtos  cellDtos = modelMapper.map(cello,CellDtos.class);
-
-        return cellDtos;
-
-    }
+    public CellDtos postCell(CellDtos cell);
 
 }
